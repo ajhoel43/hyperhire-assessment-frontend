@@ -1,40 +1,56 @@
 // App.js
 
 import SwipedView from "@/page/swiped-view";
-import { useRecommendationAccount } from "@/queries/useAccount";
+import { useLikeMutation, useRecommendationAccount } from "@/queries/useAccount";
 import type { AccountProps } from "@/types/account";
 import { AntDesign, Fontisto, Ionicons } from "@expo/vector-icons"; // Untuk ikon tombol
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
 import type Swiper from "react-native-deck-swiper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RecommendedPeople() {
 	// const [currentIndex, setCurrentIndex] = useState(0);
-	const swiperRef = useRef<Swiper<AccountProps>>(null);
+	const swiperRef = useRef<Swiper<AccountProps> & { resetDeck: () => void }>(null);
+	const [page, setPage] = useState(1);
 
-	const { data: recommendPeople } = useRecommendationAccount();
+	const { data: recommendPeople, isLoading, isFetching, refetch } = useRecommendationAccount({ page, limit: 5 });
+	const { likeAccount, dislikeAccount } = useLikeMutation();
 
-	// Fungsi untuk handle swipe kiri
 	const handleSwipeLeft = () => {
 		swiperRef.current?.swipeLeft();
 	};
 
-	// Fungsi untuk handle swipe kanan
 	const handleSwipeRight = () => {
 		swiperRef.current?.swipeRight();
 	};
 
-	// Fungsi untuk handle swipe ulang (rewind)
 	const handleRewind = () => {
-		// Note: react-native-deck-swiper tidak memiliki method rewind bawaan
-		// Anda mungkin perlu mengimplementasikan logika custom jika ingin fitur ini
-		// Untuk demo ini, kita akan melewati saja atau melakukan swipeRight lagi
-		alert("Rewind fitur belum diimplementasikan secara langsung. Swipe lagi!");
+		// alert("Rewind fitur belum diimplementasikan secara langsung. Swipe lagi!");
+		setPage(1); // reset pagination
+		refetch();
+		swiperRef.current?.resetDeck();
 	};
 
+	const onLike = useCallback(async (account: AccountProps) => {
+		try {
+
+			await likeAccount.mutateAsync({ accountId: account.id });
+		} catch (error) {
+			console.log("onLike Error", error);
+		}
+	}, [likeAccount]);
+
+	const onDislike = useCallback(async (account: AccountProps) => {
+		try {
+			await dislikeAccount.mutateAsync({ accountId: account.id });
+		} catch (error) {
+			console.log("onDislike Error", error);
+		}
+	}, [dislikeAccount])
+
 	return (
-		<SafeAreaView className="flex-1 bg-gray-100 pt-8">
+		<SafeAreaView className="flex-1 bg-gray-100">
 			<StatusBar barStyle="dark-content" />
 
 			{/* Header */}
@@ -45,11 +61,16 @@ export default function RecommendedPeople() {
 
 			{/* Swiper Area */}
 			<SwipedView
+				ref={swiperRef}
+				loading={isLoading || isFetching}
 				accounts={(recommendPeople?.peoples.data || []) as AccountProps[]}
+				fetchNext={() => setPage(prevState => prevState + 1)}
+				onSwipeRight={onLike}
+				onSwipeLeft={onDislike}
 			/>
 
 			{/* Footer Buttons */}
-			<View className="flex-row justify-around items-center py-4">
+			<View className="flex-row justify-around items-center py-4 z-10">
 				<TouchableOpacity
 					onPress={handleRewind}
 					className="p-3 rounded-full shadow-md bg-gray-50"
