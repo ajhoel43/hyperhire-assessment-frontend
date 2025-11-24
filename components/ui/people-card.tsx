@@ -12,7 +12,7 @@ type PeopleCardProps = {
 
 const PeopleCard = memo(function PeopleCard({ data }: PeopleCardProps) {
 	return (
-		<View className="relative overflow-hidden shadow-lg h-[80%] rounded-3xl mx-2">
+		<View className="relative overflow-hidden shadow-lg h-[80%] android:h-[75%] rounded-3xl mx-2">
 			<Image
 				source={{ uri: data.pictures }}
 				className="w-full h-full absolute top-0 left-0"
