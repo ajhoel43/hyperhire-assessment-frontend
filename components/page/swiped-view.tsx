@@ -7,6 +7,7 @@ import Swiper from "react-native-deck-swiper";
 type SwipeViewProps = {
 	accounts: AccountProps[];
 	loading?: boolean;
+	swipeAnimation?: boolean;
 	fetchNext?: () => void;
 	onSwipe?: (account: AccountProps) => void;
 	onSwipeLeft?: (account: AccountProps) => void;
@@ -19,7 +20,8 @@ const SwipedView = forwardRef(({
 	fetchNext,
 	onSwipe,
 	onSwipeLeft,
-	onSwipeRight
+	onSwipeRight,
+	swipeAnimation = true
 }: SwipeViewProps, ref) => {
 	const swiperRef = useRef<Swiper<AccountProps>>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,7 +79,7 @@ const SwipedView = forwardRef(({
 						cardVerticalMargin={10}
 						cardHorizontalMargin={0}
 						animateOverlayLabelsOpacity
-						overlayLabels={{
+						overlayLabels={swipeAnimation ? {
 							left: {
 								title: "NOPE",
 								style: {
@@ -114,7 +116,7 @@ const SwipedView = forwardRef(({
 									},
 								},
 							},
-						}}
+						} : {}}
 					></Swiper>
 				) : (
 					<View className="flex-1 items-center justify-center">
