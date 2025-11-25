@@ -1,4 +1,4 @@
-import Container from "@/ui/container";
+import Container from "@/page/container";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
