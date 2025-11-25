@@ -2,6 +2,9 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Preview Info
+To preview this App, you can install it on your android device via this [Expo Link](https://expo.dev/accounts/ajhoel43/projects/hyperhireAssessment/builds/acddd5a7-1bbd-49f0-9c07-6e3913fad085)
+
 ## Get started
 
 1. Install dependencies
