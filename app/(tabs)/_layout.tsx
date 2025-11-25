@@ -30,7 +30,7 @@ export default function TabLayout() {
 			}}
 		>
 			<Tabs.Screen
-				name="recommended"
+				name="index"
 				options={{
 					title: "Recommendations",
 					tabBarIcon: ({ color, focused }) => (
