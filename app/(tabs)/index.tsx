@@ -3,9 +3,10 @@
 import SwipedView from "@/page/swiped-view";
 import { useLikeMutation, useRecommendationAccount } from "@/queries/useAccount";
 import type { AccountProps } from "@/types/account";
+import Button from "@/ui/button";
 import { AntDesign, Fontisto, Ionicons } from "@expo/vector-icons"; // Untuk ikon tombol
 import { useCallback, useRef, useState } from "react";
-import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import type Swiper from "react-native-deck-swiper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -71,30 +72,18 @@ export default function RecommendedPeople() {
 
 			{/* Footer Buttons */}
 			<View className="flex-row justify-around items-center py-4 z-10">
-				<TouchableOpacity
-					onPress={handleRewind}
-					className="p-3 rounded-full shadow-md bg-gray-50"
-				>
+				<Button onPress={handleRewind}>
 					<Ionicons name="reload" size={24} color="#FDCB02" />
-				</TouchableOpacity>
-
-				<TouchableOpacity
-					onPress={handleSwipeLeft}
-					className="bg-gray-50 p-4 rounded-full shadow-lg"
-				>
+				</Button>
+				<Button onPress={handleSwipeLeft}>
 					<AntDesign name="close" size={30} color="#FD3A73" />
-				</TouchableOpacity>
-
-				<TouchableOpacity
-					onPress={handleSwipeRight}
-					className="bg-gray-50 p-4 rounded-full shadow-lg"
-				>
+				</Button>
+				<Button onPress={handleSwipeRight}>
 					<AntDesign name="heart" size={30} color="#2ED573" />
-				</TouchableOpacity>
-
-				<TouchableOpacity className="bg-gray-100 p-3 rounded-full shadow-md">
+				</Button>
+				<Button>
 					<Ionicons name="flash-sharp" size={24} color="#8A2BE2" />
-				</TouchableOpacity>
+				</Button>
 			</View>
 		</SafeAreaView>
 	);
